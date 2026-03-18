@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: isr_masters_db
+    environment:
+      POSTGRES_DB: isr_masters
+      POSTGRES_USER: isr
+      POSTGRES_PASSWORD: isr
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # persists data between restarts
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/001_schema.sql  # auto-runs on first start
+
+volumes:
+  postgres_data:
