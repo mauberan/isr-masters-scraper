@@ -14,6 +14,7 @@ CREATE TABLE competitions (
     location       TEXT,
     start_date     DATE         NOT NULL,
     end_date       DATE,
+    pool_course    VARCHAR(2)   CHECK (pool_course IN ('SC', 'LC')),
     scraped_at     TIMESTAMPTZ  DEFAULT now()
 );
 
@@ -41,7 +42,8 @@ CREATE TABLE events (
     name           TEXT    NOT NULL,   -- full name as scraped, e.g. "50m Freestyle"
     distance_m     INT,               -- 50, 100, 200, 400, 800, 1500
     stroke         VARCHAR(30),       -- freestyle, backstroke, breaststroke, butterfly, medley
-    gender         VARCHAR(10)        -- M / F
+    gender         VARCHAR(10),       -- M / F
+    pool_course    VARCHAR(2)         CHECK (pool_course IN ('SC', 'LC'))  -- SC=short course, LC=long course
 );
 
 -- -----------------------------------------------------------------------------
