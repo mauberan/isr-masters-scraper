@@ -36,7 +36,7 @@ def get_pending_migrations(applied: set[str]) -> list[Path]:
     Skips files that don't end in .sql or start with a dot.
     """
     all_files = sorted(MIGRATIONS_DIR.glob("*.sql"))
-    return [f for f in all_files if f.stem not in applied]
+    return [f for f in all_files if not f.stem.startswith("util_") and f.stem not in applied]
 
 
 def run_migration(conn, filepath: Path) -> None:
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         with get_conn() as conn:
             applied = get_applied_migrations(conn)
             pending = get_pending_migrations(applied)
-            all_files = sorted(MIGRATIONS_DIR.glob("*.sql"))
+            all_files = [f for f in sorted(MIGRATIONS_DIR.glob("*.sql")) if not f.stem.startswith("util_")]
             print(f"\nMigration status ({len(all_files)} total):\n")
             for f in all_files:
                 status = "✓ applied" if f.stem in applied else "✗ pending"
