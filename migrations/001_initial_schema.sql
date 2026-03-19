@@ -4,7 +4,6 @@
 -- automatically by Docker on first container start
 -- (via docker-entrypoint-initdb.d).
 --
--- This file exists so the migrations table has a complete history
--- starting from the beginning.
+-- This file exists so schema_migrations has a complete history from the start.
 
 INSERT INTO schema_migrations (version) VALUES ('001_initial_schema');
