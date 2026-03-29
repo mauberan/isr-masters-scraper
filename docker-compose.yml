@@ -1,4 +1,36 @@
+# docker-compose.yml
+#
+# Services:
+#   db              — ISR data PostgreSQL (your data)
+#   airflow-db      — Airflow metadata PostgreSQL (Airflow's internal state)
+#   airflow-init    — one-shot: initialises Airflow DB + creates admin user
+#   airflow-webserver — Airflow UI on port 8080
+#   airflow-scheduler — Airflow scheduler + LocalExecutor worker
+
+x-airflow-common: &airflow-common
+  build: .                          # use our custom Dockerfile
+  image: isr-airflow:latest         # tag the built image
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db/airflow
+    AIRFLOW__CORE__FERNET_KEY: ''   # generate: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: '30'
+    # ISR data DB — available to all tasks
+    DATABASE_URL: postgresql://isr:isr@db:5432/isr_masters
+  volumes:
+    - ./dags:/opt/airflow/dags          # DAG files
+    - ./logs:/opt/airflow/logs          # task logs
+    - .:/opt/airflow/project            # scraper code (importable via sys.path)
+  depends_on:
+    airflow-db:
+      condition: service_healthy
+    db:
+      condition: service_healthy
+
 services:
+  # ── ISR data database ──────────────────────────────────────────
   db:
     image: postgres:16
     container_name: isr_masters_db
@@ -7,10 +39,55 @@ services:
       POSTGRES_USER: isr
       POSTGRES_PASSWORD: isr
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # persists data between restarts
-      - ./db/schema.sql:/docker-entrypoint-initdb.d/001_schema.sql  # auto-runs on first start
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/001_schema.sql
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'isr']
+      interval: 5s
+      retries: 5
+
+  # ── Airflow metadata database ──────────────────────────────────
+  airflow-db:
+    image: postgres:16
+    container_name: airflow_db
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+    volumes:
+      - airflow_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'airflow']
+      interval: 5s
+      retries: 5
+
+  # ── Airflow init (runs once then exits) ────────────────────────
+  airflow-init:
+    <<: *airflow-common
+    command: >
+      bash -c "airflow users create --username ADMIN --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"
+    restart: 'no'
+
+  # ── Airflow webserver ──────────────────────────────────────────
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - '8080:8080'
+    healthcheck:
+      test: ['CMD', 'curl', '--fail', 'http://localhost:8080/health']
+      interval: 10s
+      retries: 5
+    restart: always
+
+  # ── Airflow scheduler (LocalExecutor — runs tasks as subprocesses) ──
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    restart: always
 
 volumes:
   postgres_data:
+  airflow_db_data:
