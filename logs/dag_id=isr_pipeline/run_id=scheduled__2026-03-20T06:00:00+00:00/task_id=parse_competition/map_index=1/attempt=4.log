@@ -1,0 +1,35 @@
+[2026-03-21T15:35:17.029+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-03-21T15:35:17.244+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: isr_pipeline.parse_competition scheduled__2026-03-20T06:00:00+00:00 map_index=1 [queued]>
+[2026-03-21T15:35:17.264+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: isr_pipeline.parse_competition scheduled__2026-03-20T06:00:00+00:00 map_index=1 [queued]>
+[2026-03-21T15:35:17.265+0000] {taskinstance.py:2303} INFO - Starting attempt 4 of 4
+[2026-03-21T15:35:17.321+0000] {taskinstance.py:2327} INFO - Executing <Mapped(_PythonDecoratedOperator): parse_competition> on 2026-03-20 06:00:00+00:00
+[2026-03-21T15:35:17.347+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'isr_pipeline', 'parse_competition', 'scheduled__2026-03-20T06:00:00+00:00', '--job-id', '64', '--raw', '--subdir', 'DAGS_FOLDER/isr_pipeline.py', '--cfg-path', '/tmp/tmpjdl4m60j', '--map-index', '1']
+[2026-03-21T15:35:17.357+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=285) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-03-21T15:35:17.357+0000] {standard_task_runner.py:91} INFO - Job 64: Subtask parse_competition
+[2026-03-21T15:35:17.359+0000] {standard_task_runner.py:63} INFO - Started process 309 to run task
+[2026-03-21T15:35:17.662+0000] {task_command.py:426} INFO - Running <TaskInstance: isr_pipeline.parse_competition scheduled__2026-03-20T06:00:00+00:00 map_index=1 [running]> on host 2f5621df97c4
+[2026-03-21T15:35:18.244+0000] {taskinstance.py:2644} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='isr_pipeline' AIRFLOW_CTX_TASK_ID='parse_competition' AIRFLOW_CTX_EXECUTION_DATE='2026-03-20T06:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='4' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-03-20T06:00:00+00:00'
+[2026-03-21T15:35:18.246+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-03-21T15:35:19.427+0000] {isr_pipeline.py:107} INFO - parse_competition: starting ×××× ××××¡××¨×¡ - ×©××× (isr=191)
+[2026-03-21T15:35:30.549+0000] {parser.py:95} INFO -   Loading session: https://loglig.com:2053/LeagueTable/AthleticsDisciplines/6016
+[2026-03-21T15:35:59.168+0000] {parser.py:146} INFO -     Race 1: 50m BACK F  — 8 results, 0 with splits
+[2026-03-21T15:36:03.808+0000] {parser.py:146} INFO -     Race 2: 50m BACK M  — 21 results, 0 with splits
+[2026-03-21T15:36:06.995+0000] {parser.py:146} INFO -     Race 3: 100m IM F  — 13 results, 0 with splits
+[2026-03-21T15:36:11.410+0000] {parser.py:146} INFO -     Race 4: 100m IM M  — 24 results, 0 with splits
+[2026-03-21T15:36:13.999+0000] {parser.py:146} INFO -     Race 5: 200m FREE F  — 8 results, 0 with splits
+[2026-03-21T15:36:17.643+0000] {parser.py:146} INFO -     Race 6: 200m FREE M  — 18 results, 0 with splits
+[2026-03-21T15:36:20.827+0000] {parser.py:146} INFO -     Race 7: 100m FLY F  — 8 results, 0 with splits
+[2026-03-21T15:36:23.571+0000] {parser.py:146} INFO -     Race 8: 100m FLY M  — 12 results, 0 with splits
+[2026-03-21T15:36:26.140+0000] {parser.py:146} INFO -     Race 9: 100m BREAST F  — 6 results, 0 with splits
+[2026-03-21T15:36:30.435+0000] {parser.py:146} INFO -     Race 10: 100m BREAST M  — 23 results, 0 with splits
+[2026-03-21T15:36:30.488+0000] {isr_pipeline.py:115} INFO -   parsed: races=10 ind=141 relay=0 swimmers=78
+[2026-03-21T15:36:30.506+0000] {storage.py:45} INFO -   Saved: ×××× ××××¡××¨×¡ - ×©×××  (10 races, 141 ind, 0 relay, 78 swimmers)
+[2026-03-21T15:36:30.508+0000] {isr_pipeline.py:127} INFO -   files saved
+[2026-03-21T15:36:30.705+0000] {document_writer.py:64} INFO -   wrote: 12 clubs  78 swimmers  10 events  141 results  0 relay results
+[2026-03-21T15:36:30.708+0000] {isr_pipeline.py:131} INFO -   DB write complete
+[2026-03-21T15:36:30.710+0000] {python.py:237} INFO - Done. Returned value was: 191
+[2026-03-21T15:36:30.711+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-03-21T15:36:30.743+0000] {taskinstance.py:1205} INFO - Marking task as SUCCESS. dag_id=isr_pipeline, task_id=parse_competition, map_index=1, execution_date=20260320T060000, start_date=20260321T153517, end_date=20260321T153630
+[2026-03-21T15:36:30.805+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-03-21T15:36:30.826+0000] {taskinstance.py:3482} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-03-21T15:36:30.828+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

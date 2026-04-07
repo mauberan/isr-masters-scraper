@@ -1,0 +1,71 @@
+[2026-03-26T12:10:26.182+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-03-26T12:10:26.270+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: isr_pipeline.parse_competition manual__2026-03-21T14:33:32.851998+00:00 map_index=0 [queued]>
+[2026-03-26T12:10:26.296+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: isr_pipeline.parse_competition manual__2026-03-21T14:33:32.851998+00:00 map_index=0 [queued]>
+[2026-03-26T12:10:26.299+0000] {taskinstance.py:2303} INFO - Starting attempt 2 of 4
+[2026-03-26T12:10:26.346+0000] {taskinstance.py:2327} INFO - Executing <Mapped(_PythonDecoratedOperator): parse_competition> on 2026-03-21 14:33:32.851998+00:00
+[2026-03-26T12:10:26.360+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'isr_pipeline', 'parse_competition', 'manual__2026-03-21T14:33:32.851998+00:00', '--job-id', '96', '--raw', '--subdir', 'DAGS_FOLDER/isr_pipeline.py', '--cfg-path', '/tmp/tmp1qvdtpbj', '--map-index', '0']
+[2026-03-26T12:10:26.365+0000] {standard_task_runner.py:91} INFO - Job 96: Subtask parse_competition
+[2026-03-26T12:10:26.362+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=167) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-03-26T12:10:26.369+0000] {standard_task_runner.py:63} INFO - Started process 185 to run task
+[2026-03-26T12:10:26.586+0000] {task_command.py:426} INFO - Running <TaskInstance: isr_pipeline.parse_competition manual__2026-03-21T14:33:32.851998+00:00 map_index=0 [running]> on host 2f5621df97c4
+[2026-03-26T12:10:26.889+0000] {taskinstance.py:2644} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='isr_pipeline' AIRFLOW_CTX_TASK_ID='parse_competition' AIRFLOW_CTX_EXECUTION_DATE='2026-03-21T14:33:32.851998+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-03-21T14:33:32.851998+00:00'
+[2026-03-26T12:10:26.891+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-03-26T12:10:28.219+0000] {isr_pipeline.py:107} INFO - parse_competition: starting ××××¤××ª ××©×¨×× ××××¡××¨×¡ (isr=102)
+[2026-03-26T12:10:29.968+0000] {parser.py:95} INFO -   Loading session: https://loglig.com:2053/LeagueTable/AthleticsDisciplines/5628
+[2026-03-26T12:10:42.164+0000] {parser.py:146} INFO -     Race 1: 400m FREE F  — 27 results, 21 with splits
+[2026-03-26T12:10:54.108+0000] {parser.py:146} INFO -     Race 2: 400m FREE M  — 47 results, 41 with splits
+[2026-03-26T12:11:03.561+0000] {parser.py:146} INFO -     Race 3: 50m BACK F  — 36 results, 0 with splits
+[2026-03-26T12:11:19.587+0000] {parser.py:146} INFO -     Race 4: 50m BACK M  — 75 results, 0 with splits
+[2026-03-26T12:11:26.286+0000] {parser.py:146} INFO -     Race 5: 100m FLY F  — 17 results, 14 with splits
+[2026-03-26T12:11:34.060+0000] {parser.py:146} INFO -     Race 6: 100m FLY M  — 32 results, 25 with splits
+[2026-03-26T12:11:39.917+0000] {parser.py:146} INFO -     Race 7: 200m BREAST F  — 14 results, 14 with splits
+[2026-03-26T12:11:49.405+0000] {parser.py:146} INFO -     Race 8: 200m BREAST M  — 35 results, 29 with splits
+[2026-03-26T12:12:00.079+0000] {parser.py:230} WARNING -     PDF.js error for 13372: Page.evaluate: RangeError: Invalid typed array length: 4
+    at new Uint8Array (<anonymous>)
+    at eval (eval at evaluate (:226:30), <anonymous>:12:36)
+    at async <anonymous>:252:30
+[2026-03-26T12:12:00.080+0000] {parser.py:146} INFO -     Race 9: 50m FREE F RELAY — 14 results, 0 with splits
+[2026-03-26T12:12:21.857+0000] {parser.py:146} INFO -     Race 10: 50m FREE M RELAY — 28 results, 0 with splits
+[2026-03-26T12:12:29.169+0000] {parser.py:146} INFO -     Race 11: 200m IM F  — 22 results, 20 with splits
+[2026-03-26T12:12:36.878+0000] {parser.py:146} INFO -     Race 12: 200m IM M  — 36 results, 31 with splits
+[2026-03-26T12:12:43.466+0000] {parser.py:146} INFO -     Race 13: 50m BREAST F  — 34 results, 0 with splits
+[2026-03-26T12:12:56.313+0000] {parser.py:146} INFO -     Race 14: 50m BREAST M  — 80 results, 0 with splits
+[2026-03-26T12:13:03.283+0000] {parser.py:146} INFO -     Race 15: 100m BACK F  — 27 results, 23 with splits
+[2026-03-26T12:13:12.111+0000] {parser.py:146} INFO -     Race 16: 100m BACK M  — 42 results, 35 with splits
+[2026-03-26T12:13:16.706+0000] {parser.py:128} WARNING -     Race 17: HTML fetch error — 500 Server Error: Internal Server Error for url: https://loglig.com:2053/LeagueTable/AthleticsDisciplineResults/13380
+[2026-03-26T12:13:34.009+0000] {parser.py:146} INFO -     Race 18: 100m FREE M  — 110 results, 92 with splits
+[2026-03-26T12:13:53.410+0000] {parser.py:146} INFO -     Race 19: 50m MEDLEY MIX RELAY — 28 results, 0 with splits
+[2026-03-26T12:13:57.741+0000] {parser.py:146} INFO -     Race 21: 800m FREE F  — 10 results, 6 with splits
+[2026-03-26T12:14:04.505+0000] {parser.py:146} INFO -     Race 22: 800m FREE M  — 27 results, 20 with splits
+[2026-03-26T12:14:11.462+0000] {parser.py:146} INFO -     Race 23: 100m BREAST F  — 28 results, 27 with splits
+[2026-03-26T12:14:22.132+0000] {parser.py:146} INFO -     Race 24: 100m BREAST M  — 59 results, 41 with splits
+[2026-03-26T12:14:26.764+0000] {parser.py:128} WARNING -     Race 25: HTML fetch error — 500 Server Error: Internal Server Error for url: https://loglig.com:2053/LeagueTable/AthleticsDisciplineResults/13392
+[2026-03-26T12:14:40.825+0000] {parser.py:146} INFO -     Race 26: 50m FREE M  — 115 results, 0 with splits
+[2026-03-26T12:14:44.013+0000] {parser.py:146} INFO -     Race 27: 200m FLY F  — 5 results, 3 with splits
+[2026-03-26T12:14:48.387+0000] {parser.py:146} INFO -     Race 28: 200m FLY M  — 10 results, 7 with splits
+[2026-03-26T12:15:05.325+0000] {parser.py:146} INFO -     Race 29: 50m FREE MIX RELAY — 26 results, 0 with splits
+[2026-03-26T12:15:09.371+0000] {parser.py:128} WARNING -     Race 31: HTML fetch error — 500 Server Error: Internal Server Error for url: https://loglig.com:2053/LeagueTable/AthleticsDisciplineResults/13403
+[2026-03-26T12:15:22.210+0000] {parser.py:146} INFO -     Race 32: 50m FLY M  — 81 results, 0 with splits
+[2026-03-26T12:15:25.610+0000] {parser.py:146} INFO -     Race 33: 200m BACK F  — 11 results, 8 with splits
+[2026-03-26T12:15:32.081+0000] {parser.py:146} INFO -     Race 34: 200m BACK M  — 28 results, 21 with splits
+[2026-03-26T12:15:32.752+0000] {parser.py:138} WARNING -     Race 35: 0 HTML rows
+[2026-03-26T12:15:37.259+0000] {parser.py:146} INFO -     Race 36: 400m IM M  — 18 results, 17 with splits
+[2026-03-26T12:15:42.477+0000] {parser.py:146} INFO -     Race 37: 200m FREE F  — 24 results, 22 with splits
+[2026-03-26T12:15:51.776+0000] {parser.py:146} INFO -     Race 38: 200m FREE M  — 56 results, 42 with splits
+[2026-03-26T12:15:57.105+0000] {parser.py:230} WARNING -     PDF.js error for 13828: Page.evaluate: RangeError: Invalid typed array length: 4
+    at new Uint8Array (<anonymous>)
+    at eval (eval at evaluate (:226:30), <anonymous>:12:36)
+    at async <anonymous>:252:30
+[2026-03-26T12:15:57.106+0000] {parser.py:146} INFO -     Race 39: 50m MEDLEY F RELAY — 12 results, 0 with splits
+[2026-03-26T12:16:07.783+0000] {parser.py:146} INFO -     Race 40: 50m MEDLEY M RELAY — 23 results, 0 with splits
+[2026-03-26T12:16:07.853+0000] {isr_pipeline.py:115} INFO -   parsed: races=38 ind=1106 relay=131 swimmers=397
+[2026-03-26T12:16:07.990+0000] {storage.py:45} INFO -   Saved: ××××¤××ª ××©×¨×× ××××¡××¨×¡  (38 races, 1106 ind, 131 relay, 397 swimmers)
+[2026-03-26T12:16:07.991+0000] {isr_pipeline.py:127} INFO -   files saved
+[2026-03-26T12:16:08.884+0000] {document_writer.py:64} INFO -   wrote: 32 clubs  397 swimmers  38 events  1106 results  131 relay results
+[2026-03-26T12:16:08.886+0000] {isr_pipeline.py:131} INFO -   DB write complete
+[2026-03-26T12:16:08.889+0000] {python.py:237} INFO - Done. Returned value was: 102
+[2026-03-26T12:16:08.890+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-03-26T12:16:08.921+0000] {taskinstance.py:1205} INFO - Marking task as SUCCESS. dag_id=isr_pipeline, task_id=parse_competition, map_index=0, execution_date=20260321T143332, start_date=20260326T121026, end_date=20260326T121608
+[2026-03-26T12:16:08.993+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-03-26T12:16:09.018+0000] {taskinstance.py:3482} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-03-26T12:16:09.021+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

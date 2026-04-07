@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: isr
+    schema: public
+    description: 'Raw ISR Masters scraped data'
+    tables:
+      - name: competitions
+      - name: clubs
+      - name: swimmers
+      - name: events
+      - name: heats
+      - name: results
+      - name: relay_results

@@ -1,0 +1,12 @@
+isr_transforms:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5432
+      user: isr
+      password: isr
+      dbname: isr_masters
+      schema: gold
+      threads: 4

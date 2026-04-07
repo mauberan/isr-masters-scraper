@@ -1,0 +1,86 @@
+[2026-03-21T15:40:02.838+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-03-21T15:40:02.936+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: isr_pipeline.parse_competition manual__2026-03-21T14:33:32.851998+00:00 map_index=10 [queued]>
+[2026-03-21T15:40:02.957+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: isr_pipeline.parse_competition manual__2026-03-21T14:33:32.851998+00:00 map_index=10 [queued]>
+[2026-03-21T15:40:02.958+0000] {taskinstance.py:2303} INFO - Starting attempt 1 of 4
+[2026-03-21T15:40:02.981+0000] {taskinstance.py:2327} INFO - Executing <Mapped(_PythonDecoratedOperator): parse_competition> on 2026-03-21 14:33:32.851998+00:00
+[2026-03-21T15:40:03.006+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=1661) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-03-21T15:40:03.017+0000] {standard_task_runner.py:63} INFO - Started process 1673 to run task
+[2026-03-21T15:40:03.026+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'isr_pipeline', 'parse_competition', 'manual__2026-03-21T14:33:32.851998+00:00', '--job-id', '84', '--raw', '--subdir', 'DAGS_FOLDER/isr_pipeline.py', '--cfg-path', '/tmp/tmpxh78ebt0', '--map-index', '10']
+[2026-03-21T15:40:03.028+0000] {standard_task_runner.py:91} INFO - Job 84: Subtask parse_competition
+[2026-03-21T15:40:03.162+0000] {task_command.py:426} INFO - Running <TaskInstance: isr_pipeline.parse_competition manual__2026-03-21T14:33:32.851998+00:00 map_index=10 [running]> on host 2f5621df97c4
+[2026-03-21T15:40:03.526+0000] {taskinstance.py:2644} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='isr_pipeline' AIRFLOW_CTX_TASK_ID='parse_competition' AIRFLOW_CTX_EXECUTION_DATE='2026-03-21T14:33:32.851998+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-03-21T14:33:32.851998+00:00'
+[2026-03-21T15:40:03.528+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-03-21T15:40:03.994+0000] {isr_pipeline.py:107} INFO - parse_competition: starting ××××¤××ª ××©×¨×× arena ××××¡××¨×¡ ×××¨××××ª ×§×¦×¨××ª (isr=468)
+[2026-03-21T15:40:05.660+0000] {parser.py:95} INFO -   Loading session: https://loglig.com:2053/LeagueTable/AthleticsDisciplines/10235
+[2026-03-21T15:40:27.146+0000] {parser.py:146} INFO -     Race 1: 800m FREE F  — 23 results, 19 with splits
+[2026-03-21T15:40:36.096+0000] {parser.py:146} INFO -     Race 2: 800m FREE M  — 43 results, 31 with splits
+[2026-03-21T15:40:44.827+0000] {parser.py:146} INFO -     Race 3: 50m BACK F  — 30 results, 0 with splits
+[2026-03-21T15:41:19.851+0000] {parser.py:146} INFO -     Race 4: 50m BACK M  — 51 results, 0 with splits
+[2026-03-21T15:42:07.533+0000] {parser.py:146} INFO -     Race 5: 100m FLY F  — 11 results, 10 with splits
+[2026-03-21T15:44:35.268+0000] {parser.py:146} INFO -     Race 6: 100m FLY M  — 22 results, 20 with splits
+[2026-03-21T15:52:40.332+0000] {local_task_job_runner.py:310} WARNING - State of this instance has been externally set to None. Terminating instance.
+[2026-03-21T15:52:40.348+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
+[2026-03-21T15:52:40.476+0000] {process_utils.py:132} INFO - Sending 15 to group 1673. PIDs of all processes in the group: [1694, 1862, 1896, 1897, 1975, 2022, 1970, 1673]
+[2026-03-21T15:52:40.490+0000] {process_utils.py:87} INFO - Sending the signal 15 to group 1673
+[2026-03-21T15:52:40.502+0000] {taskinstance.py:2607} ERROR - Received SIGTERM. Terminating subprocesses.
+[2026-03-21T15:52:40.546+0000] {process_utils.py:80} INFO - Process psutil.Process(pid=1897, status='terminated', started='15:40:04') (1897) terminated with exit code None
+[2026-03-21T15:52:40.694+0000] {process_utils.py:80} INFO - Process psutil.Process(pid=1975, status='terminated', started='15:40:05') (1975) terminated with exit code None
+[2026-03-21T15:52:40.704+0000] {process_utils.py:80} INFO - Process psutil.Process(pid=1970, status='terminated', started='15:40:05') (1970) terminated with exit code None
+[2026-03-21T15:52:40.706+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-03-21T15:52:40.799+0000] {process_utils.py:80} INFO - Process psutil.Process(pid=2022, status='terminated', started='15:40:05') (2022) terminated with exit code None
+[2026-03-21T15:52:40.834+0000] {taskinstance.py:2890} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 460, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/decorators/base.py", line 265, in execute
+    return_value = super().execute(context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/isr_pipeline.py", line 113, in parse_competition
+    doc  = _parse(comp, registry, page)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/project/parser.py", line 142, in parse_competition
+    splits_map = _fetch_and_parse_splits(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/project/parser.py", line 228, in _fetch_and_parse_splits
+    result = page.evaluate(js)
+             ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 8183, in evaluate
+    self._sync(
+  File "/home/airflow/.local/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 113, in _sync
+    self._dispatcher_fiber.switch()
+  File "/home/airflow/.local/lib/python3.12/site-packages/playwright/sync_api/_context_manager.py", line 56, in greenlet_main
+    self._loop.run_until_complete(self._connection.run_as_sync())
+  File "/usr/local/lib/python3.12/asyncio/base_events.py", line 672, in run_until_complete
+    self.run_forever()
+  File "/usr/local/lib/python3.12/asyncio/base_events.py", line 639, in run_forever
+    self._run_once()
+  File "/usr/local/lib/python3.12/asyncio/base_events.py", line 1947, in _run_once
+    event_list = self._selector.select(timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/selectors.py", line 468, in select
+    fd_event_list = self._selector.poll(timeout, max_ev)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 2609, in signal_handler
+    raise AirflowTaskTerminated("Task received SIGTERM signal")
+airflow.exceptions.AirflowTaskTerminated: Task received SIGTERM signal
+[2026-03-21T15:52:40.913+0000] {taskinstance.py:1205} INFO - Marking task as UP_FOR_RETRY. dag_id=isr_pipeline, task_id=parse_competition, map_index=10, execution_date=20260321T143332, start_date=20260321T154002, end_date=20260321T155240
+[2026-03-21T15:52:40.959+0000] {process_utils.py:80} INFO - Process psutil.Process(pid=1862, status='terminated', started='15:40:04') (1862) terminated with exit code None
+[2026-03-21T15:52:40.961+0000] {process_utils.py:80} INFO - Process psutil.Process(pid=1896, status='terminated', started='15:40:04') (1896) terminated with exit code None
+[2026-03-21T15:52:40.962+0000] {process_utils.py:80} INFO - Process psutil.Process(pid=1694, status='terminated', started='15:40:03') (1694) terminated with exit code None
+[2026-03-21T15:52:41.298+0000] {process_utils.py:80} INFO - Process psutil.Process(pid=1673, status='terminated', exitcode=2, started='15:40:02') (1673) terminated with exit code 2

@@ -1,0 +1,109 @@
+[0m18:10:31.745138 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x112d337a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11345a030>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x113643fb0>]}
+
+
+============================== 18:10:31.751160 | 0863b0e1-02ca-4c9e-920d-4cab71a1a75a ==============================
+[0m18:10:31.751160 [info ] [MainThread]: Running with dbt=1.11.7
+[0m18:10:31.751875 [debug] [MainThread]: running dbt with arguments {'quiet': 'False', 'log_path': 'logs', 'introspect': 'True', 'write_json': 'True', 'send_anonymous_usage_stats': 'True', 'profiles_dir': '/Users/ranmau/.dbt', 'empty': 'None', 'log_cache_events': 'False', 'log_format': 'default', 'invocation_command': 'dbt init isr_transforms', 'use_colors': 'True', 'printer_width': '80', 'no_print': 'None', 'partial_parse': 'True', 'warn_error': 'None', 'cache_selected_only': 'False', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'debug': 'False', 'static_parser': 'True', 'fail_fast': 'False', 'use_experimental_parser': 'False', 'version_check': 'True', 'indirect_selection': 'eager', 'target_path': 'None'}
+[0m18:10:31.773023 [debug] [MainThread]: Starter project path: /Users/ranmau/Sites/isrscraper/.venv/lib/python3.12/site-packages/dbt/include/starter_project
+[0m18:10:31.781320 [info ] [MainThread]: 
+Your new dbt project "isr_transforms" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m18:10:31.782037 [info ] [MainThread]: Setting up your profile.
+[0m18:14:53.502050 [info ] [MainThread]: Profile isr_transforms written to /Users/ranmau/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m18:14:53.774444 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 262.14505, "process_in_blocks": "0", "process_kernel_time": 0.215954, "process_mem_max_rss": "108814336", "process_out_blocks": "0", "process_user_time": 1.713141}
+[0m18:14:53.775222 [debug] [MainThread]: Command `dbt init` succeeded at 18:14:53.775063 after 262.15 seconds
+[0m18:14:53.775847 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x113643ec0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1135e8950>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1130ee840>]}
+[0m18:14:53.776418 [debug] [MainThread]: Flushing usage events
+[0m18:14:54.484197 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m11:25:41.038687 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10ea569c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10f15c9e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10f15c470>]}
+
+
+============================== 11:25:41.045221 | 1758c10d-85a3-4e00-a872-9978ffae7beb ==============================
+[0m11:25:41.045221 [info ] [MainThread]: Running with dbt=1.11.7
+[0m11:25:41.045988 [debug] [MainThread]: running dbt with arguments {'cache_selected_only': 'False', 'invocation_command': 'dbt run --select staging', 'warn_error': 'None', 'introspect': 'True', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'use_experimental_parser': 'False', 'version_check': 'True', 'partial_parse': 'True', 'write_json': 'True', 'send_anonymous_usage_stats': 'True', 'no_print': 'None', 'printer_width': '80', 'quiet': 'False', 'target_path': 'None', 'use_colors': 'True', 'fail_fast': 'False', 'debug': 'False', 'log_format': 'default', 'log_path': 'logs', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'static_parser': 'True', 'empty': 'False', 'profiles_dir': '/Users/ranmau/.dbt'}
+[0m11:25:41.046718 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /Users/ranmau/Sites/isrscraper/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m11:25:41.049889 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": false, "command_wall_clock_time": 0.11246859, "process_in_blocks": "0", "process_kernel_time": 0.340331, "process_mem_max_rss": "103866368", "process_out_blocks": "0", "process_user_time": 1.814999}
+[0m11:25:41.050606 [debug] [MainThread]: Command `dbt run` failed at 11:25:41.050460 after 0.11 seconds
+[0m11:25:41.051091 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10eb91670>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10d2b6690>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10f15c6b0>]}
+[0m11:25:41.051555 [debug] [MainThread]: Flushing usage events
+[0m11:25:41.830424 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m01:34:34.567990 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x103c66d80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106947da0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106974140>]}
+
+
+============================== 01:34:34.574626 | 7f7ab17f-a8e0-4c2e-afa2-738520433e97 ==============================
+[0m01:34:34.574626 [info ] [MainThread]: Running with dbt=1.11.7
+[0m01:34:34.575396 [debug] [MainThread]: running dbt with arguments {'no_print': 'None', 'use_experimental_parser': 'False', 'profiles_dir': '/Users/ranmau/.dbt', 'warn_error': 'None', 'indirect_selection': 'eager', 'write_json': 'True', 'version_check': 'True', 'cache_selected_only': 'False', 'log_format': 'default', 'quiet': 'False', 'static_parser': 'True', 'introspect': 'True', 'empty': 'None', 'target_path': 'None', 'invocation_command': 'dbt debug', 'fail_fast': 'False', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'partial_parse': 'True', 'log_path': 'logs', 'use_colors': 'True', 'printer_width': '80', 'log_cache_events': 'False', 'send_anonymous_usage_stats': 'True', 'debug': 'False'}
+[0m01:34:34.598412 [info ] [MainThread]: dbt version: 1.11.7
+[0m01:34:34.598897 [info ] [MainThread]: python version: 3.12.13
+[0m01:34:34.599283 [info ] [MainThread]: python path: /Users/ranmau/Sites/isrscraper/.venv/bin/python3.12
+[0m01:34:34.599711 [info ] [MainThread]: os info: macOS-15.7.4-x86_64-i386-64bit
+[0m01:34:34.691268 [info ] [MainThread]: Using profiles dir at /Users/ranmau/.dbt
+[0m01:34:34.691741 [info ] [MainThread]: Using profiles.yml file at /Users/ranmau/.dbt/profiles.yml
+[0m01:34:34.692115 [info ] [MainThread]: Using dbt_project.yml file at /Users/ranmau/Sites/isrscraper/dbt_project.yml
+[0m01:34:34.692562 [error] [MainThread]: Encountered an error:
+Internal Error
+  Profile should not be None if loading profile completed
+[0m01:34:34.695794 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.22395205, "process_in_blocks": "0", "process_kernel_time": 0.310753, "process_mem_max_rss": "106672128", "process_out_blocks": "0", "process_user_time": 1.864746}
+[0m01:34:34.696402 [debug] [MainThread]: Command `dbt debug` failed at 01:34:34.696252 after 0.22 seconds
+[0m01:34:34.696879 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106974140>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106a7a4e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106987350>]}
+[0m01:34:34.697368 [debug] [MainThread]: Flushing usage events
+[0m01:34:35.411122 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m02:00:33.161865 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x113ddeea0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1141146b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x114114140>]}
+
+
+============================== 02:00:33.168906 | 5c7677f1-336c-49b6-92a8-d0a4cd9c6153 ==============================
+[0m02:00:33.168906 [info ] [MainThread]: Running with dbt=1.11.7
+[0m02:00:33.169793 [debug] [MainThread]: running dbt with arguments {'use_experimental_parser': 'False', 'log_path': 'logs', 'debug': 'False', 'cache_selected_only': 'False', 'use_colors': 'True', 'quiet': 'False', 'fail_fast': 'False', 'send_anonymous_usage_stats': 'True', 'printer_width': '80', 'log_format': 'default', 'partial_parse': 'True', 'indirect_selection': 'eager', 'warn_error': 'None', 'introspect': 'True', 'empty': 'None', 'invocation_command': 'dbt debug', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'target_path': 'None', 'version_check': 'True', 'no_print': 'None', 'write_json': 'True', 'log_cache_events': 'False', 'static_parser': 'True', 'profiles_dir': '/Users/ranmau/.dbt'}
+[0m02:00:33.192645 [info ] [MainThread]: dbt version: 1.11.7
+[0m02:00:33.193134 [info ] [MainThread]: python version: 3.12.13
+[0m02:00:33.193529 [info ] [MainThread]: python path: /Users/ranmau/Sites/isrscraper/.venv/bin/python3.12
+[0m02:00:33.193912 [info ] [MainThread]: os info: macOS-15.7.4-x86_64-i386-64bit
+[0m02:00:33.290652 [info ] [MainThread]: Using profiles dir at /Users/ranmau/.dbt
+[0m02:00:33.291140 [info ] [MainThread]: Using profiles.yml file at /Users/ranmau/.dbt/profiles.yml
+[0m02:00:33.291530 [info ] [MainThread]: Using dbt_project.yml file at /Users/ranmau/Sites/isrscraper/dbt_project.yml
+[0m02:00:33.291993 [error] [MainThread]: Encountered an error:
+Internal Error
+  Profile should not be None if loading profile completed
+[0m02:00:33.295768 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.23944157, "process_in_blocks": "0", "process_kernel_time": 0.31681, "process_mem_max_rss": "107151360", "process_out_blocks": "0", "process_user_time": 1.842093}
+[0m02:00:33.296481 [debug] [MainThread]: Command `dbt debug` failed at 02:00:33.296333 after 0.24 seconds
+[0m02:00:33.296953 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x114114350>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11423b500>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1141162d0>]}
+[0m02:00:33.297428 [debug] [MainThread]: Flushing usage events
+[0m02:00:34.044573 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m02:02:49.859419 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1099f22a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108e64800>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108e65670>]}
+
+
+============================== 02:02:49.865880 | c265cf3d-7394-49e9-b228-6acf00bf0351 ==============================
+[0m02:02:49.865880 [info ] [MainThread]: Running with dbt=1.11.7
+[0m02:02:49.866793 [debug] [MainThread]: running dbt with arguments {'version_check': 'True', 'empty': 'None', 'invocation_command': 'dbt debug', 'write_json': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'log_cache_events': 'False', 'static_parser': 'True', 'profiles_dir': '/Users/ranmau/.dbt', 'indirect_selection': 'eager', 'send_anonymous_usage_stats': 'True', 'cache_selected_only': 'False', 'printer_width': '80', 'warn_error': 'None', 'partial_parse': 'True', 'debug': 'False', 'target_path': 'None', 'no_print': 'None', 'fail_fast': 'False', 'log_format': 'default', 'introspect': 'True', 'log_path': 'logs', 'use_colors': 'True', 'quiet': 'False', 'use_experimental_parser': 'False'}
+[0m02:02:49.886827 [info ] [MainThread]: dbt version: 1.11.7
+[0m02:02:49.887314 [info ] [MainThread]: python version: 3.12.13
+[0m02:02:49.887713 [info ] [MainThread]: python path: /Users/ranmau/Sites/isrscraper/.venv/bin/python3.12
+[0m02:02:49.888102 [info ] [MainThread]: os info: macOS-15.7.4-x86_64-i386-64bit
+[0m02:02:49.984792 [info ] [MainThread]: Using profiles dir at /Users/ranmau/.dbt
+[0m02:02:49.985296 [info ] [MainThread]: Using profiles.yml file at /Users/ranmau/.dbt/profiles.yml
+[0m02:02:49.985685 [info ] [MainThread]: Using dbt_project.yml file at /Users/ranmau/Sites/isrscraper/dbt_project.yml
+[0m02:02:49.986156 [error] [MainThread]: Encountered an error:
+Internal Error
+  Profile should not be None if loading profile completed
+[0m02:02:49.989813 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.23008168, "process_in_blocks": "0", "process_kernel_time": 0.318025, "process_mem_max_rss": "107978752", "process_out_blocks": "0", "process_user_time": 1.912964}
+[0m02:02:49.990441 [debug] [MainThread]: Command `dbt debug` failed at 02:02:49.990303 after 0.23 seconds
+[0m02:02:49.990908 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108e64980>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109c8c2f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109bdccb0>]}
+[0m02:02:49.991525 [debug] [MainThread]: Flushing usage events
+[0m02:02:50.711049 [debug] [MainThread]: An error was encountered while trying to flush usage events

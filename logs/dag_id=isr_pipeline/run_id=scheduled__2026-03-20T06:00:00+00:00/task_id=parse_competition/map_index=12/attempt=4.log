@@ -1,0 +1,63 @@
+[2026-03-21T15:35:13.946+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-03-21T15:35:13.992+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: isr_pipeline.parse_competition scheduled__2026-03-20T06:00:00+00:00 map_index=12 [queued]>
+[2026-03-21T15:35:14.004+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: isr_pipeline.parse_competition scheduled__2026-03-20T06:00:00+00:00 map_index=12 [queued]>
+[2026-03-21T15:35:14.005+0000] {taskinstance.py:2303} INFO - Starting attempt 4 of 4
+[2026-03-21T15:35:14.020+0000] {taskinstance.py:2327} INFO - Executing <Mapped(_PythonDecoratedOperator): parse_competition> on 2026-03-20 06:00:00+00:00
+[2026-03-21T15:35:14.029+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'isr_pipeline', 'parse_competition', 'scheduled__2026-03-20T06:00:00+00:00', '--job-id', '56', '--raw', '--subdir', 'DAGS_FOLDER/isr_pipeline.py', '--cfg-path', '/tmp/tmpnxgol5xq', '--map-index', '12']
+[2026-03-21T15:35:14.031+0000] {standard_task_runner.py:91} INFO - Job 56: Subtask parse_competition
+[2026-03-21T15:35:14.033+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=214) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-03-21T15:35:14.034+0000] {standard_task_runner.py:63} INFO - Started process 215 to run task
+[2026-03-21T15:35:14.100+0000] {task_command.py:426} INFO - Running <TaskInstance: isr_pipeline.parse_competition scheduled__2026-03-20T06:00:00+00:00 map_index=12 [running]> on host 2f5621df97c4
+[2026-03-21T15:35:14.236+0000] {taskinstance.py:2644} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='isr_pipeline' AIRFLOW_CTX_TASK_ID='parse_competition' AIRFLOW_CTX_EXECUTION_DATE='2026-03-20T06:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='4' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-03-20T06:00:00+00:00'
+[2026-03-21T15:35:14.238+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-03-21T15:35:14.641+0000] {isr_pipeline.py:107} INFO - parse_competition: starting ××××¤××ª ××©×¨×× arena ××××¡××¨×¡ (isr=481)
+[2026-03-21T15:35:15.100+0000] {parser.py:95} INFO -   Loading session: https://loglig.com:2053/LeagueTable/AthleticsDisciplines/10934
+[2026-03-21T15:35:56.172+0000] {parser.py:146} INFO -     Race 1: 400m FREE F  — 22 results, 17 with splits
+[2026-03-21T15:36:03.725+0000] {parser.py:146} INFO -     Race 2: 400m FREE M  — 58 results, 49 with splits
+[2026-03-21T15:36:09.137+0000] {parser.py:146} INFO -     Race 3: 50m BREAST F  — 27 results, 0 with splits
+[2026-03-21T15:36:17.273+0000] {parser.py:146} INFO -     Race 4: 50m BREAST M  — 68 results, 0 with splits
+[2026-03-21T15:36:22.667+0000] {parser.py:146} INFO -     Race 5: 100m BACK F  — 34 results, 32 with splits
+[2026-03-21T15:36:28.754+0000] {parser.py:146} INFO -     Race 6: 100m BACK M  — 47 results, 36 with splits
+[2026-03-21T15:36:30.906+0000] {parser.py:146} INFO -     Race 7: 200m FLY F  — 6 results, 5 with splits
+[2026-03-21T15:36:33.397+0000] {parser.py:146} INFO -     Race 8: 200m FLY M  — 11 results, 9 with splits
+[2026-03-21T15:36:43.085+0000] {parser.py:146} INFO -     Race 9: 50m MEDLEY MIX RELAY — 24 results, 0 with splits
+[2026-03-21T15:36:47.119+0000] {parser.py:146} INFO -     Race 11: 50m FLY F  — 29 results, 0 with splits
+[2026-03-21T15:36:55.585+0000] {parser.py:146} INFO -     Race 12: 50m FLY M  — 81 results, 0 with splits
+[2026-03-21T15:36:58.763+0000] {parser.py:146} INFO -     Race 13: 200m BREAST F  — 21 results, 19 with splits
+[2026-03-21T15:37:03.426+0000] {parser.py:146} INFO -     Race 14: 200m BREAST M  — 34 results, 27 with splits
+[2026-03-21T15:37:08.327+0000] {parser.py:146} INFO -     Race 15: 100m FREE F  — 40 results, 37 with splits
+[2026-03-21T15:37:16.274+0000] {parser.py:146} INFO -     Race 16: 100m FREE M  — 93 results, 81 with splits
+[2026-03-21T15:37:19.621+0000] {parser.py:146} INFO -     Race 17: 200m IM F  — 22 results, 17 with splits
+[2026-03-21T15:37:24.982+0000] {parser.py:146} INFO -     Race 18: 200m IM M  — 44 results, 36 with splits
+[2026-03-21T15:37:32.549+0000] {parser.py:146} INFO -     Race 19: 50m FREE F RELAY — 16 results, 0 with splits
+[2026-03-21T15:37:41.850+0000] {parser.py:146} INFO -     Race 20: 50m FREE M RELAY — 23 results, 0 with splits
+[2026-03-21T15:37:44.979+0000] {parser.py:146} INFO -     Race 21: 200m BACK F  — 14 results, 11 with splits
+[2026-03-21T15:37:49.606+0000] {parser.py:146} INFO -     Race 22: 200m BACK M  — 27 results, 22 with splits
+[2026-03-21T15:37:58.221+0000] {parser.py:146} INFO -     Race 23: 50m FREE F  — 44 results, 0 with splits
+[2026-03-21T15:38:05.184+0000] {parser.py:146} INFO -     Race 24: 50m FREE M  — 88 results, 0 with splits
+[2026-03-21T15:38:09.049+0000] {parser.py:146} INFO -     Race 25: 100m BREAST F  — 23 results, 20 with splits
+[2026-03-21T15:38:14.542+0000] {parser.py:146} INFO -     Race 26: 100m BREAST M  — 44 results, 38 with splits
+[2026-03-21T15:38:24.162+0000] {parser.py:146} INFO -     Race 27: 50m FREE MIX RELAY — 22 results, 0 with splits
+[2026-03-21T15:38:26.570+0000] {parser.py:146} INFO -     Race 29: 400m IM F  — 10 results, 9 with splits
+[2026-03-21T15:38:30.749+0000] {parser.py:146} INFO -     Race 30: 400m IM M  — 18 results, 12 with splits
+[2026-03-21T15:38:33.606+0000] {parser.py:146} INFO -     Race 31: 800m FREE F  — 14 results, 11 with splits
+[2026-03-21T15:38:37.883+0000] {parser.py:146} INFO -     Race 32: 800m FREE M  — 30 results, 20 with splits
+[2026-03-21T15:38:41.821+0000] {parser.py:146} INFO -     Race 33: 50m BACK F  — 29 results, 0 with splits
+[2026-03-21T15:38:47.347+0000] {parser.py:146} INFO -     Race 34: 50m BACK M  — 41 results, 0 with splits
+[2026-03-21T15:38:51.391+0000] {parser.py:146} INFO -     Race 35: 200m FREE F  — 29 results, 22 with splits
+[2026-03-21T15:38:56.849+0000] {parser.py:146} INFO -     Race 36: 200m FREE M  — 46 results, 37 with splits
+[2026-03-21T15:39:00.541+0000] {parser.py:146} INFO -     Race 37: 100m FLY F  — 16 results, 14 with splits
+[2026-03-21T15:39:05.575+0000] {parser.py:146} INFO -     Race 38: 100m FLY M  — 34 results, 28 with splits
+[2026-03-21T15:39:13.904+0000] {parser.py:146} INFO -     Race 39: 50m MEDLEY M RELAY — 21 results, 0 with splits
+[2026-03-21T15:39:20.646+0000] {parser.py:146} INFO -     Race 40: 50m MEDLEY F RELAY — 14 results, 0 with splits
+[2026-03-21T15:39:20.717+0000] {isr_pipeline.py:115} INFO -   parsed: races=38 ind=1144 relay=120 swimmers=374
+[2026-03-21T15:39:20.837+0000] {storage.py:45} INFO -   Saved: ××××¤××ª ××©×¨×× arena ××××¡××¨×¡  (38 races, 1144 ind, 120 relay, 374 swimmers)
+[2026-03-21T15:39:20.838+0000] {isr_pipeline.py:127} INFO -   files saved
+[2026-03-21T15:39:21.763+0000] {document_writer.py:64} INFO -   wrote: 40 clubs  374 swimmers  38 events  1144 results  120 relay results
+[2026-03-21T15:39:21.765+0000] {isr_pipeline.py:131} INFO -   DB write complete
+[2026-03-21T15:39:21.767+0000] {python.py:237} INFO - Done. Returned value was: 481
+[2026-03-21T15:39:21.768+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-03-21T15:39:21.799+0000] {taskinstance.py:1205} INFO - Marking task as SUCCESS. dag_id=isr_pipeline, task_id=parse_competition, map_index=12, execution_date=20260320T060000, start_date=20260321T153513, end_date=20260321T153921
+[2026-03-21T15:39:21.851+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-03-21T15:39:21.874+0000] {taskinstance.py:3482} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-03-21T15:39:21.877+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
