@@ -1,0 +1,12 @@
+isr_transforms:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost   # use 'db' when running inside Docker
+      port: 5432
+      user: YOUR_USER
+      password: YOUR_PASSWORD
+      dbname: isr_masters
+      schema: gold
+      threads: 4
