@@ -1,21 +1,14 @@
 # dags/isr_pipeline.py
 #
-# ISR Masters Scraper — Airflow DAG (production, Step 3 capstone)
+# ISR Masters Scraper — Airflow DAG (Step 4 — with dbt integration)
 #
 # Pipeline:
 #   check_for_new        — ShortCircuitOperator: skip if no new competitions
 #   scrape_metadata      — fetch competition list, return CompetitionMeta dicts via XCom
 #   parse_competition    — dynamic: one task per competition, full pipeline inside
+#   dbt_run              — rebuild gold layer (personal bests, rankings, club stats)
+#   dbt_test             — run dbt schema tests against gold models
 #   done                 — empty task marking clean pipeline completion
-#
-# Design decisions:
-#   - scrape_all_competitions() called ONCE in scrape_metadata (not re-scraped in parse)
-#   - Full CompetitionMeta serialized to dict and passed via XCom
-#   - check_for_new makes its own lightweight HTTP call — acceptable duplication,
-#     keeps short-circuit logic self-contained
-#   - Each parse_competition task is fully idempotent (all DB writes are upserts)
-#   - Playwright session opened and closed within each task (not shared across tasks)
-#   - DB connection pool closed at end of each task (LocalExecutor subprocess isolation)
 
 import sys
 import logging
@@ -25,6 +18,7 @@ from dataclasses import asdict
 sys.path.insert(0, '/opt/airflow/project')
 
 from airflow.decorators import dag, task
+from airflow.operators.bash import BashOperator
 from airflow.operators.empty import EmptyOperator
 
 log = logging.getLogger(__name__)
@@ -35,6 +29,10 @@ DEFAULT_ARGS = {
     'retry_exponential_backoff': True,
     'execution_timeout':         timedelta(hours=1),
 }
+
+# Path to the dbt project inside the container
+DBT_PROJECT_DIR = '/opt/airflow/project/isr_transforms'
+DBT_CMD = f'cd {DBT_PROJECT_DIR} && dbt'
 
 
 @dag(
@@ -48,8 +46,8 @@ DEFAULT_ARGS = {
     doc_md          = """
 ## ISR Masters Scraper Pipeline
 
-Scrapes competition results from the Israel Swimming Association (ISR) site,
-parses them via Playwright, saves raw files (bronze), and writes to PostgreSQL (silver).
+Scrapes competition results from ISR, writes to PostgreSQL (silver),
+then runs dbt to build the gold analytics layer.
 
 ### Schedule
 Daily at 06:00 UTC.
@@ -60,6 +58,8 @@ Daily at 06:00 UTC.
 | check_for_new_competitions | ShortCircuit | Skips pipeline if no new competitions |
 | scrape_metadata | Python | Fetches competition list from ISR |
 | parse_competition | Python (dynamic) | One task per competition |
+| dbt_run | Bash | Rebuilds gold layer models |
+| dbt_test | Bash | Runs schema tests on gold models |
 | done | Empty | Marks clean pipeline completion |
     """,
 )
@@ -84,9 +84,9 @@ def isr_pipeline():
     @task(task_id='scrape_metadata')
     def scrape_metadata() -> list[dict]:
         """
-        Fetches the full competition list from ISR — the only task that makes
-        HTTP requests to the ISR site. Returns serialized CompetitionMeta dicts
-        for new (unsaved) competitions only.
+        Fetches the full competition list from ISR.
+        Returns serialized CompetitionMeta dicts for new competitions only.
+        Full dicts travel via XCom — parse_competition never re-scrapes.
         """
         from scraper import scrape_all_competitions
         from storage import already_saved
@@ -101,7 +101,7 @@ def isr_pipeline():
         task_id           = 'parse_competition',
         retries           = 3,
         retry_delay       = timedelta(minutes=5),
-        execution_timeout = timedelta(minutes=45),  # per-competition timeout
+        execution_timeout = timedelta(minutes=45),
     )
     def parse_competition(comp_dict: dict) -> str:
         """
@@ -126,7 +126,6 @@ def isr_pipeline():
 
         log.info(f'parse_competition: starting {comp.name} (isr={comp.isr_id})')
 
-        # Parse
         registry = build_registry()
         with sync_playwright() as pw:
             page = _get_page(pw)
@@ -142,31 +141,57 @@ def isr_pipeline():
         if not doc.individual_scores and not doc.relay_scores:
             raise ValueError(f'{comp.isr_id}: 0 scores scraped — will retry')
 
-        # Save files (bronze)
         save_competition(doc)
         log.info('  files saved')
 
-        # Write to DB (silver)
         write_document(doc)
         log.info('  DB write complete')
 
-        # Clean up DB pool (subprocess isolation)
         close_pool()
-
         return comp.isr_id
 
-    # ── Task 4: Done marker ────────────────────────────────────────
-    done = EmptyOperator(task_id='done', trigger_rule='all_done')
-    # trigger_rule='all_done' means done runs even if some parse tasks
-    # failed or were skipped — it marks the end of the pipeline run
-    # regardless of individual competition outcomes
+    # ── Task 4: dbt run ────────────────────────────────────────────
+    # Rebuilds all gold layer models after new data is written to silver.
+    # trigger_rule='all_done' means this runs even if some parse tasks
+    # failed — we still want to refresh the gold layer with whatever
+    # competitions did succeed.
+    dbt_run = BashOperator(
+        task_id      = 'dbt_run',
+        bash_command = f'{DBT_CMD} run --profiles-dir {DBT_PROJECT_DIR}',
+        trigger_rule = 'all_done',
+    )
+
+    # ── Task 5: dbt test ───────────────────────────────────────────
+    # Runs schema tests (not_null, unique, accepted_values, relationships)
+    # against the freshly built gold models.
+    # If tests fail, the task turns red in the UI — the data is still
+    # queryable, but you get a visible signal that something is wrong.
+    dbt_test = BashOperator(
+        task_id      = 'dbt_test',
+        bash_command = f'{DBT_CMD} test --profiles-dir {DBT_PROJECT_DIR}',
+    )
+
+    # ── Task 6: Done marker ────────────────────────────────────────
+    done = EmptyOperator(
+        task_id      = 'done',
+        trigger_rule = 'all_done',
+    )
 
     # ── DAG wiring ─────────────────────────────────────────────────
+    #
+    # check_for_new gates everything downstream via short-circuit.
+    # parse_competition runs in parallel (one instance per competition).
+    # dbt_run waits for ALL parse tasks to finish before rebuilding gold.
+    # dbt_test runs after dbt_run succeeds.
+    # done runs regardless — clean terminal node.
+    #
     has_new    = check_for_new()
     comp_dicts = scrape_metadata()
     parsed     = parse_competition.expand(comp_dict=comp_dicts)
 
-    has_new >> comp_dicts   # short-circuit gates scrape_metadata
-    parsed >> done          # done runs after all parse tasks complete
+    has_new >> comp_dicts       # short-circuit gates scrape_metadata
+    parsed  >> dbt_run          # dbt rebuilds after all competitions parsed
+    dbt_run >> dbt_test >> done
+
 
 isr_pipeline()
