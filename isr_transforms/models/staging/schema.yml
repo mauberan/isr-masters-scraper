@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_results
+    description: 'Clean individual race results — DSQ and DNS excluded'
+    columns:
+      - name: result_id
+        tests: [not_null, unique]
+      - name: time_ms
+        tests: [not_null]
+      - name: swimmer_id
+        tests: [not_null]
+
+  - name: stg_swimmers
+    description: 'Deduplicated swimmer list with stable loglig_id'
+    columns:
+      - name: swimmer_id
+        tests: [not_null, unique]
+      - name: full_name
+        tests: [not_null]
+      - name: gender
+        tests:
+          - accepted_values:
+              values: ['M', 'F', 'MIX', '?']
+
+  - name: stg_events
+    description: 'Individual race events — relay events excluded'
+    columns:
+      - name: event_id
+        tests: [not_null, unique]
+      - name: pool_course
+        tests:
+          - accepted_values:
+              values: ['SC', 'LC']
