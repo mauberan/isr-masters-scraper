@@ -27,11 +27,8 @@ from models import (
 )
 from config import JSON_DIR
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    datefmt="%H:%M:%S",
-)
+from utils.logging import setup_logging
+setup_logging(level='INFO')
 log = logging.getLogger("pipeline")
 
 

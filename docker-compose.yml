@@ -1,28 +1,26 @@
 # docker-compose.yml
 #
-# Services:
-#   db              — ISR data PostgreSQL (your data)
-#   airflow-db      — Airflow metadata PostgreSQL (Airflow's internal state)
-#   airflow-init    — one-shot: initialises Airflow DB + creates admin user
-#   airflow-webserver — Airflow UI on port 8080
-#   airflow-scheduler — Airflow scheduler + LocalExecutor worker
+# Development stack.
+# Uses .env for all secrets — no hardcoded values.
+# Code mounted as volume for live reload (dev only).
+# Dockerfile (Airflow) unchanged from Step 3.
 
 x-airflow-common: &airflow-common
-  build: .                          # use our custom Dockerfile
-  image: isr-airflow:latest         # tag the built image
+  build: .                          # uses ./Dockerfile for Airflow — unchanged
+  image: isr-airflow:latest
+  env_file: .env
   environment:
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db/airflow
-    AIRFLOW__CORE__FERNET_KEY: ''   # generate: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
+    AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: '30'
-    # ISR data DB — available to all tasks
-    DATABASE_URL: postgresql://isr:isr@db:5432/isr_masters
+    DATABASE_URL: ${DATABASE_URL}
   volumes:
-    - ./dags:/opt/airflow/dags          # DAG files
-    - ./logs:/opt/airflow/logs          # task logs
-    - .:/opt/airflow/project            # scraper code (importable via sys.path)
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - .:/opt/airflow/project
   depends_on:
     airflow-db:
       condition: service_healthy
@@ -34,32 +32,36 @@ services:
   db:
     image: postgres:16
     container_name: isr_masters_db
+    env_file: .env
     environment:
-      POSTGRES_DB: isr_masters
-      POSTGRES_USER: isr
-      POSTGRES_PASSWORD: isr
+      POSTGRES_DB:       ${POSTGRES_DB}
+      POSTGRES_USER:     ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db/schema.sql:/docker-entrypoint-initdb.d/001_schema.sql
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'isr']
-      interval: 5s
+      test: ['CMD', 'pg_isready', '-U', '${POSTGRES_USER}', '-d', '${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
       retries: 5
+      start_period: 10s
 
   # ── Airflow metadata database ──────────────────────────────────
   airflow-db:
     image: postgres:16
     container_name: airflow_db
+    env_file: .env
     environment:
-      POSTGRES_DB: airflow
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB:       ${AIRFLOW_POSTGRES_DB}
+      POSTGRES_USER:     ${AIRFLOW_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${AIRFLOW_POSTGRES_PASSWORD}
     volumes:
       - airflow_db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'airflow']
+      test: ['CMD', 'pg_isready', '-U', '${AIRFLOW_POSTGRES_USER}']
       interval: 5s
       retries: 5
 
@@ -67,7 +69,14 @@ services:
   airflow-init:
     <<: *airflow-common
     command: >
-      bash -c "airflow users create --username ADMIN --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"
+      bash -c "
+        airflow db migrate &&
+        airflow users create
+          --username ${AIRFLOW_ADMIN_USER}
+          --password ${AIRFLOW_ADMIN_PASSWORD}
+          --firstname Admin --lastname User
+          --role Admin --email admin@example.com
+      "
     restart: 'no'
 
   # ── Airflow webserver ──────────────────────────────────────────
@@ -82,7 +91,7 @@ services:
       retries: 5
     restart: always
 
-  # ── Airflow scheduler (LocalExecutor — runs tasks as subprocesses) ──
+  # ── Airflow scheduler ──────────────────────────────────────────
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler

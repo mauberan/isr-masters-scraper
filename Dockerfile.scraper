@@ -1,0 +1,55 @@
+# Dockerfile.scraper
+#
+# Production image for the ISR scraper.
+# Multi-stage: builder installs deps, runtime copies only what is needed.
+# Playwright + Chromium baked in.
+#
+# The immutable image principle: code is baked in via COPY . .
+# not mounted as a volume. Identical behaviour on any machine.
+#
+# Build:
+#   docker build -f Dockerfile.scraper -t isr-scraper:latest .
+
+# Stage 1: builder — installs Python dependencies
+FROM python:3.12-slim AS builder
+WORKDIR /build
+COPY requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# Stage 2: runtime — lean image with only what is needed to run
+FROM python:3.12-slim AS runtime
+
+# System dependencies required by Playwright/Chromium
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libnss3 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libxkbcommon0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    libgbm1 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libasound2 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy installed Python packages from builder stage
+COPY --from=builder /install /usr/local
+
+# Copy application code
+COPY . .
+
+# Install Playwright browsers (Chromium only)
+RUN playwright install chromium
+
+# Non-root user — never run as root in production
+RUN useradd -m -u 1001 scraper && chown -R scraper:scraper /app
+USER scraper
+
+# Default command: run the pipeline
+CMD ["python", "pipeline.py"]

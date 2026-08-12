@@ -1,6 +1,28 @@
+# Environment — never commit secrets
+.env
+.env.local
+
+# dbt profiles — contains DB credentials
+isr_transforms/profiles.yml
+isr_transforms/.user.yml
+
+# dbt build artifacts and logs
+isr_transforms/target/
+isr_transforms/logs/
+isr_transforms/dbt_packages/
+
+# Scraped data — too large, not source code
 data/
-.DS_Store
-.venv/
+
+# Airflow logs — generated at runtime
+logs/
+
+# Python
 __pycache__/
 *.pyc
-.env
+*.pyo
+.venv/
+*.egg-info/
+
+# macOS
+.DS_Store

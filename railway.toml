@@ -1,0 +1,14 @@
+# railway.toml
+#
+# Railway project configuration.
+# Tells Railway to build using the existing Dockerfile (Airflow image).
+# The managed PostgreSQL database is provisioned separately
+# via the Railway UI — not declared here.
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Always restart on failure
+restartPolicyType = "always"

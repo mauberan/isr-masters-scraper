@@ -1,1 +1,0 @@
-[2026-03-21T15:48:41.701+0000] {task_context_logger.py:104} ERROR - Executor reports task instance <TaskInstance: isr_pipeline.parse_competition manual__2026-03-21T14:33:32.851998+00:00 map_index=4 [queued]> finished (failed) although the task says it's queued. (Info: None) Was the task killed externally?

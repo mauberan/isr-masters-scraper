@@ -2,112 +2,157 @@
 
 ## Overview
 
-This document describes the entity model for data collected by `isr-masters-scraper`
-from the Israel Swimming Association (ISR) results platform (loglig.com).
-
-Designing this model was the first step before writing any database code — to avoid
-structural mistakes that are expensive to fix later.
+This document describes the database schema used by the ISR Masters Scraper to store competition results from the Israel Swimming Association platform (loglig.com).
 
 ---
 
-## Source Data
-
-The scraper collects competition results structured as follows (simplified):
-
-```
-competition → events → heats → results (one row per swimmer per heat)
-```
-
-Each result row from the raw scrape looks roughly like:
-
-| field | example |
-|-------|---------|
-| competition name | "ISR Masters Championship 2024" |
-| competition date | 2024-11-10 |
-| event | "50m Freestyle" |
-| gender | "Men" |
-| birth year | 1979 |
-| heat number | 3 |
-| lane | 5 |
-| swimmer name | "Lior Cohen" |
-| club | "HaMaccabi Tel Aviv" |
-| time | "25.43" |
-
----
-
-## Entity Identification
-
-From the raw data, the following real-world entities were identified:
-
-### Competition
-A swim meet — has a name, date range, and location.
-- Natural key: ISR's own `competition_id` (from the URL/DOM)
-
-### Event
-A specific race within a competition — e.g. "50m Freestyle Men 45-49".
-- Belongs to one competition
-- Can be decomposed into: distance, stroke, gender
-- Age group is not stored directly — it is derived from swimmer birth year and competition date
-
-### Heat
-A sub-group within an event — swimmers are split into heats by seed time.
-- Belongs to one event
-- Identified by heat number within its event
-
-### Swimmer
-A person. No stable external ID is available from the source site.
-- Natural key: `(full_name, birth_year)` — name alone is not unique enough
-- Club is tracked per result, not on the swimmer — swimmers change clubs over time
-- Age group is computed: `competition_year - birth_year`
-
-### Result
-One swimmer's performance in one heat.
-- Links a swimmer to a heat
-- Contains: lane, time, DSQ/DNS flags, club at time of race
-
----
-
-## Entity-Relationship Sketch
+## Entity-Relationship Summary
 
 ```
 competitions
-    │
     └──< events
-              │
               └──< heats
-                       │
-                       └──< results >── swimmers
+                       ├──< results      ──< swimmers
+                       └──< relay_results
+clubs ─────────────────────────────────── (referenced by results, swimmers)
 ```
 
-- One competition has many events
-- One event has many heats
-- One heat has many results
-- Each result belongs to one swimmer
-- Swimmers exist independently — the same swimmer appears across many competitions
+- One **competition** has many **events** (races)
+- One **event** has many **heats** (sub-groups of swimmers)
+- One **heat** has many **results** (individual) or **relay_results**
+- **Swimmers** exist independently and appear across many competitions
+- **Clubs** are deduplicated; club at race time is stored on the result row, not on the swimmer
+
+---
+
+## Tables
+
+### `competitions`
+One row per swim meet.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | SERIAL PK | Internal |
+| `competition_id` | VARCHAR UNIQUE | ISR's own ID (from URL) |
+| `loglig_id` | VARCHAR | Loglig platform ID |
+| `name` | TEXT | Competition display name |
+| `location` | TEXT | NULL until manually set |
+| `start_date` | DATE | Parsed from date_range |
+| `end_date` | DATE | NULL for single-day meets |
+| `sport_type` | TEXT | e.g. "שחייה" (swimming) |
+| `pool_course` | VARCHAR(2) | SC or LC, default SC |
+| `scraped_at` | TIMESTAMPTZ | Audit timestamp |
+
+### `clubs`
+Deduplicated club list across all competitions.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | SERIAL PK | |
+| `name` | TEXT UNIQUE | As it appears on loglig |
+
+### `swimmers`
+Deduplicated swimmer list across all competitions.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | SERIAL PK | |
+| `loglig_id` | VARCHAR UNIQUE | From `/Players/Details/{id}` link |
+| `full_name` | TEXT | |
+| `birth_year` | INT | Used for age group calculation |
+| `club_id` | INT FK → clubs | Home club at registration time |
+| `gender` | VARCHAR(5) | M / F — inferred from race gender |
+
+Upsert strategy: if `loglig_id` is a real player link ID, upsert on `loglig_id`. If the swimmer had no profile link, fall back to `(full_name, birth_year)` as the natural key.
+
+### `events`
+One row per race within a competition.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | SERIAL PK | |
+| `competition_id` | INT FK → competitions | |
+| `loglig_event_id` | VARCHAR | Discipline ID on loglig |
+| `event_num` | INT | Order within the competition |
+| `name` | TEXT | e.g. "50m free M" |
+| `distance_m` | INT | Metres |
+| `stroke` | VARCHAR(30) | FREE / BACK / BREAST / FLY / IM / MEDLEY |
+| `gender` | VARCHAR(10) | M / F / MIX |
+| `category` | TEXT | Raw Hebrew category string |
+| `is_relay` | BOOLEAN | |
+| `race_date` | DATE | From PDF header or race schedule |
+| `start_time` | TEXT | Scheduled start time |
+| `pool_course` | VARCHAR(2) | SC or LC, default SC |
+
+### `heats`
+Sub-groups within an event.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | SERIAL PK | |
+| `event_id` | INT FK → events | |
+| `heat_num` | INT | |
+
+Heats are created lazily when a result row is written.
+
+### `results`
+One row per swimmer per heat.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | SERIAL PK | |
+| `heat_id` | INT FK → heats | |
+| `swimmer_id` | INT FK → swimmers | |
+| `club_id` | INT FK → clubs | Club at time of race |
+| `lane` | INT | |
+| `time_ms` | INT | Milliseconds; NULL if DSQ or DNS |
+| `dsq` | BOOLEAN | Disqualified |
+| `dns` | BOOLEAN | Did not start |
+| `place` | INT | Overall place in the event |
+| `points` | INT | Individual points |
+| `team_points` | INT | Points counting toward club score |
+| `reaction_time` | VARCHAR(20) | e.g. "+0.70" — from splits PDF |
+| `splits` | JSONB | `{"1": "25.43", "2": "51.22", ...}` cumulative |
+| `scraped_at` | TIMESTAMPTZ | |
+
+### `relay_results`
+One row per relay team per heat.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | SERIAL PK | |
+| `heat_id` | INT FK → heats | |
+| `club_id` | INT FK → clubs | |
+| `swimmer_ids` | INT[] | Ordered leg array (leg 0..3) |
+| `lane` | INT | |
+| `time_ms` | INT | Milliseconds |
+| `dsq` / `dns` | BOOLEAN | |
+| `place` | INT | |
+| `points` / `team_points` | INT | |
+| `splits` | JSONB | Same format as results |
+| `scraped_at` | TIMESTAMPTZ | |
 
 ---
 
 ## Key Design Decisions
 
-**Swimmer identity: `(full_name, birth_year)`, no external ID**
-The source site provides no stable swimmer ID we can rely on. `full_name` alone is
-not unique enough across hundreds of swimmers. `birth_year` is the tiebreaker —
-it is also needed for age group calculation, so it pulls double duty.
+**Swimmer identity: `loglig_id` primary, `(full_name, birth_year)` fallback**
+Loglig exposes a stable player ID via profile links. When available, it is used as the natural key. For relay legs that appear without a profile link, `(full_name, birth_year)` is the fallback.
 
 **Club stored on the result, not the swimmer**
-Swimmers change clubs between seasons. Storing club on the swimmer row would lose
-historical accuracy. Instead, `club` is a column on `results` — capturing where
-the swimmer competed at the time of that race.
+Swimmers change clubs between seasons. Storing club on the result row preserves the historical club affiliation at the time of the race.
 
 **Age group is derived, not stored**
-`age_group = competition_year - swimmer.birth_year`. Storing it would be redundant
-and could go out of sync. It is computed at query time.
+`age_group = EXTRACT(YEAR FROM race_date) - birth_year`. Storing it would be redundant and could diverge. It is computed at query time in the dbt intermediate model.
 
-**Times stored as integers (milliseconds), not strings**
-`"25.43"` → `25430`. Enables arithmetic, sorting, and aggregation without parsing.
+**Times stored as integers (milliseconds) in the DB**
+`"25.43"` → `25430`. Enables arithmetic, sorting, and aggregation without string parsing. The raw string is stored in `result_time` in the JSON bronze layer; conversion happens at write time.
 
-**DSQ and DNS as boolean flags, not special time values**
-Avoids the temptation to store `"DSQ"` as a time string, which breaks numeric queries.
+**DSQ and DNS as boolean flags**
+Avoids the temptation to store `"DSQ"` as a time value, which would break numeric queries.
 
-**Timezone-aware timestamps for all audit columns**
-`scraped_at TIMESTAMPTZ` — avoids silent timezone bugs in multi-locale environments.
+**Idempotent upserts**
+Every write uses `INSERT ... ON CONFLICT DO UPDATE`, keyed on natural unique constraints. Re-running the pipeline on already-stored competitions is safe.
+
+**Timezone-aware timestamps**
+`scraped_at TIMESTAMPTZ` on all fact tables avoids silent timezone bugs.
